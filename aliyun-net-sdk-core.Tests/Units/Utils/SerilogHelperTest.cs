@@ -34,10 +34,7 @@ namespace Aliyun.Acs.Core.Tests.Units.Utils
         public void OutputLogException()
         {
             var format = "{Exception}";
-            var logger = new Logger(EnvironmentUtil.GetHomePath() + EnvironmentUtil.GetOSSlash() + "log.txt",
-                template: format);
-
-            SerilogHelper.SetLogger(logger);
+            SerilogHelper.SetLogger();
 
             var exception = new Exception();
 
@@ -54,10 +51,7 @@ namespace Aliyun.Acs.Core.Tests.Units.Utils
         public void OutputLogInfoTestInValid()
         {
             var format = "{code}|{pid}|{start_time}";
-            var logger = new Logger(EnvironmentUtil.GetHomePath() + EnvironmentUtil.GetOSSlash() + "log.txt",
-                template: format);
-
-            SerilogHelper.SetLogger(logger);
+            SerilogHelper.SetLogger();
 
             var request = new AssumeRoleRequest
             {
@@ -65,14 +59,13 @@ namespace Aliyun.Acs.Core.Tests.Units.Utils
             };
             var response = new HttpResponse();
             long executeTime = 100;
-            var startTime = DateTime.Now.ToString();
 
-            Assert.Throws<ClientException>(() => { SerilogHelper.LogInfo(request, null, executeTime, startTime); });
+            Assert.Throws<ClientException>(() => { SerilogHelper.LogInfo(request, null, executeTime); });
 
             SerilogHelper.CloseLogger();
             Assert.False(SerilogHelper.EnableLogger);
 
-            SerilogHelper.LogInfo(request, null, 100, "100");
+            SerilogHelper.LogInfo(request, null, 100);
         }
 
         [Fact]
@@ -80,10 +73,7 @@ namespace Aliyun.Acs.Core.Tests.Units.Utils
         {
             var format = "{start_time}|{code}|{pid}|{cost}";
 
-            var logger = new Logger(EnvironmentUtil.GetHomePath() + EnvironmentUtil.GetOSSlash() + "log.txt",
-                template: format);
-
-            SerilogHelper.SetLogger(logger);
+            SerilogHelper.SetLogger();
 
             var request = new AssumeRoleRequest
             {
@@ -91,9 +81,8 @@ namespace Aliyun.Acs.Core.Tests.Units.Utils
             };
             var response = new HttpResponse();
             long executeTime = 100;
-            var startTime = DateTime.Now.ToString();
 
-            SerilogHelper.LogInfo(request, response, executeTime, startTime);
+            SerilogHelper.LogInfo(request, response, executeTime);
             Assert.True(SerilogHelper.EnableLogger);
 
             SerilogHelper.CloseLogger();

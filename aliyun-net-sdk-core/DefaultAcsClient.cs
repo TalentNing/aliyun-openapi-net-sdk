@@ -239,7 +239,7 @@ namespace Aliyun.Acs.Core
 
         private T ParseAcsResponse<T>(AcsRequest<T> request, HttpResponse httpResponse) where T : AcsResponse
         {
-            SerilogHelper.LogInfo(request, httpResponse, SerilogHelper.ExecuteTime, SerilogHelper.StartTime);
+            SerilogHelper.LogInfo(request, httpResponse, SerilogHelper.ExecuteTime);
             var format = httpResponse.ContentType;
 
             if (httpResponse.isSuccess())
@@ -304,7 +304,6 @@ namespace Aliyun.Acs.Core
         {
             try
             {
-                SerilogHelper.StartTime = DateTime.UtcNow.ToString("o");
                 var watch = Stopwatch.StartNew();
 
                 FormatType? requestFormatType = request.AcceptFormat;
@@ -579,9 +578,9 @@ namespace Aliyun.Acs.Core
             }
         }
 
-        public void SetLogger(Logger logger)
+        public void SetLogger()
         {
-            SerilogHelper.SetLogger(logger);
+            SerilogHelper.SetLogger();
         }
 
         public void CloseLogger()
